@@ -60,7 +60,7 @@ class Player(object):
 
             ambulances[ambulance_id] = {'starting_hospital': hospital_id, 'route': None}
 
-        IMPORTANT: Although all values are integers (inlcuding ids) JSON converts them everything into strings. Hence,
+        IMPORTANT: Although all values are integers (inlcuding ids) JSON converts everything into strings. Hence,
                    if you wish to use the values as integers, please remember to cast them into ints. Likewise, to index
                    into the dictionaries please remember to cast numeric ids into strings i.e. self.patients[str(p_id)]
 
@@ -80,6 +80,7 @@ class Player(object):
                         + The 'p' can be uppercase or lowercase
                         + There can be no whitespace, i.e. 'p 32' will not be accepted
                     - A stop for a hospital is the same as the patient except with an 'h', i.e. 'h3'
+                        + The 'h' can also be uppercase or lowercase
 
             Example:
                 ambulance_routes[3] = ['p0', 'p43', 'h4', 'p102', 'p145', 'p241', 'p32', 'h1']

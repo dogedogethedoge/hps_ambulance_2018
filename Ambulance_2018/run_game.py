@@ -1,7 +1,6 @@
 import sys
 
 from getopt import getopt
-from multiprocessing import Process
 
 from server import GameServer
 from client import Player
