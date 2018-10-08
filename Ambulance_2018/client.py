@@ -1,6 +1,7 @@
 import json
 from hps.clients import SocketClient
 import sys
+import time
 
 HOST = '127.0.0.1'
 PORT = 5000
@@ -13,7 +14,9 @@ class Player(object):
 
 
     def play_game(self):
-        game_state = json.loads(self.client.receive_data(size=8192))
+        buffer_size_message = json.loads(self.client.receive_data(size=2048))
+        buffer_size = int(buffer_size_message['buffer_size'])
+        game_state = json.loads(self.client.receive_data(size=buffer_size))
         self.patients = game_state['patients']
         self.hospitals = game_state['hospitals']
         self.ambulances = game_state['ambulances']
@@ -22,8 +25,15 @@ class Player(object):
         (hos_locations, amb_routes) = self.your_algorithm()
         response = {'hospital_loc': hos_locations, 'ambulance_moves': amb_routes}
         print('sending data')
-        print(sys.getsizeof(response))
+        min_buffer_size = sys.getsizeof(json.dumps(response))
+        print(min_buffer_size)
         print(response)
+
+        buff_size_needed = 1 << (min_buffer_size - 1).bit_length()
+        buff_size_needed = max(buff_size_needed, 2048)
+        buff_size_message = {'buffer_size': buff_size_needed}
+        self.client.send_data(json.dumps(buff_size_message))
+        time.sleep(2)
         self.client.send_data(json.dumps(response))
 
         # Get results of game

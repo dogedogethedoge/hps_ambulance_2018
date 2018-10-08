@@ -1,6 +1,7 @@
 import json
-from random import randint
-from time import time
+import sys
+import time
+from time import time as tm
 
 from hps.servers import SocketServer
 
@@ -77,7 +78,7 @@ class GameServer(object):
     def accept_player_connections(self):
         self.server = SocketServer(HOST, PORT, 1)
         self.server.establish_client_connections()
-        self.player_attributes = json.loads(self.server.receive_from_all(size=8192)[0])
+        self.player_attributes = json.loads(self.server.receive_from(0, size=2048))
         self.player_name = self.player_attributes['name']
 
     def route_time(self, c_loc, n_loc):
@@ -97,12 +98,20 @@ class GameServer(object):
         input_data = {'patients': self.patients, 'hospitals': self.hospitals, 'ambulances': self.ambulances}
         print(input_data)
         print('---------')
+        buff_size_needed = sys.getsizeof(json.dumps(input_data))
+        buff_size_needed = 1<<(buff_size_needed-1).bit_length()
+        buff_size_message = {'buffer_size': buff_size_needed}
+        self.server.send_to(json.dumps(buff_size_message), 0)
+        time.sleep(2)
         self.server.send_to(json.dumps(input_data), 0)
-        start = time()
-        moves = json.loads(self.server.receive_from_all(size=8192)[0])
-        stop = time()
+        start = tm()
+        buff_size_message = json.loads(self.server.receive_from(0, size=2048))
+        buff_size_needed = int(buff_size_message['buffer_size'])
+        print(buff_size_needed)
+        moves = json.loads(self.server.receive_from(0, size=buff_size_needed))
+        stop = tm()
 
-        if (stop-start) > 120:
+        if (stop-start) > 122:
             m = 'Player ' + str(self.player_name) + ' ran for more than 2 minutes'
             self.game_over(m, [])
 
@@ -177,8 +186,8 @@ class GameServer(object):
                         if time_counter <= self.patients[patient]['rescuetime']:
                             print('Ambulance ' + str(amb_id) + ' saved patient ' + str(patient))
                             patients_saved += [patient]
-                        else:
-                            print('Patient ' + str(patient) + ' died before reaching the hospital')
+                        # else:
+                        #     print('Patient ' + str(patient) + ' died before reaching the hospital')
 
                     p_inside_amb = []
                     continue
