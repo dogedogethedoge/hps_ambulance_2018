@@ -23,9 +23,6 @@ class Player(object):
 
         # Get hospital locations and ambulance routes
         (hos_locations, amb_routes) = self.your_algorithm()
-        print('test')
-        print(hos_locations)
-        print(amb_routes)
 
         response = {'hospital_loc': hos_locations, 'ambulance_moves': amb_routes}
        
@@ -100,14 +97,21 @@ class Player(object):
         res_hos[1] = {'xloc':18, 'yloc':20}
         res_hos[2] = {'xloc':70, 'yloc':85}
 
-        # testing ambulance route not ending with destination
+
         # testing no movement/time increment
         res_amb[0] = ['p0', 'p1', 'p2', 'p3', 'h0', 'p4', 'h0']
 
         # testing more than 4 pickups
         res_amb[1] = ['p5', 'p6', 'p7', 'p8', 'h1']
+
         # testing duplicate person id
         res_amb[2] = ['p9', 'p10', 'p11', 'h2']
         res_amb[3] = ['p12', 'p11', 'h2']
+
+        # testing rescue overtime (t = 0 before unloading)
+        res_amb[4] = ['p13', 'h0']
+
+        # testing rescue barely making it (t = 0 after unloading counts as rescued)
+        res_amb[5] = ['p14', 'h0']
      
         return (res_hos, res_amb)
