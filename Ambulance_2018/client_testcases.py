@@ -94,9 +94,11 @@ class Player(object):
                 patient #43, then drops both off at hospital #4, then picks up patients #102, #145, #241, #32 in that
                 order then drops all of them off at hospital #1
         """
-        res_hos = {{'xloc':36, 'yloc':52}, {'xloc':18, 'yloc':20}, {'xloc':70, 'yloc':85}}
+        res_hos = {}
         res_amb = {}
-        
+        res_hos[0] = {'xloc':36, 'yloc':52}
+        res_hos[1] = {'xloc':18, 'yloc':20}
+        res_hos[1] = {'xloc':70, 'yloc':85}
 
         # testing ambulance route not ending with destination
         # testing no movement/time increment
