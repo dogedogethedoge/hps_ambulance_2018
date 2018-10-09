@@ -122,8 +122,12 @@ class GameServer(object):
         print(ambulance_moves)
 
         for hos_id in range(0, self.total_hospitals):
-            xloc = hospital_locations[str(hos_id)]['xloc']
-            yloc = hospital_locations[str(hos_id)]['yloc']
+            try:
+                xloc = hospital_locations[str(hos_id)]['xloc']
+                yloc = hospital_locations[str(hos_id)]['yloc']
+            except Exception as e:
+                m = 'Didn\'t get hospital location for hospital #' + str(hos_id)
+                self.game_over(m, [])
 
             if xloc < 0 or yloc < 0:
                 m = 'Invalid hospital location'
