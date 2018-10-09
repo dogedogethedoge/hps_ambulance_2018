@@ -94,7 +94,7 @@ class Player(object):
                 patient #43, then drops both off at hospital #4, then picks up patients #102, #145, #241, #32 in that
                 order then drops all of them off at hospital #1
         """
-        res_hos = {{'xloc':30, 'yloc':30}, {'xloc':18, 'yloc':20}, {'xloc':70, 'yloc':85}}
+        res_hos = {{'xloc':36, 'yloc':52}, {'xloc':18, 'yloc':20}, {'xloc':70, 'yloc':85}}
         res_amb = {}
         
 
