@@ -98,7 +98,7 @@ class Player(object):
         res_amb = {}
         res_hos[0] = {'xloc':36, 'yloc':52}
         res_hos[1] = {'xloc':18, 'yloc':20}
-        res_hos[1] = {'xloc':70, 'yloc':85}
+        res_hos[2] = {'xloc':70, 'yloc':85}
 
         # testing ambulance route not ending with destination
         # testing no movement/time increment
