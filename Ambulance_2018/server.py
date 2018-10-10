@@ -64,7 +64,7 @@ class GameServer(object):
                 num_ambulances = int(line)
                 ambulances_at_hospital = []
                 for amb in range(0, num_ambulances):
-                    ambulances[ambulance_id] = {'starting_hospital': hospital_id, 'route': None}
+                    ambulances[ambulance_id] = {'starting_hospital': hospital_id}
                     ambulances_at_hospital += [ambulance_id]
                     ambulance_id += 1
                 hospitals[hospital_id]['ambulances_at_start'] = ambulances_at_hospital

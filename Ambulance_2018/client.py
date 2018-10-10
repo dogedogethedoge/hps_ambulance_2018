@@ -58,7 +58,7 @@ class Player(object):
 
             hospitals[hospital_id] = {'xloc': None, 'yloc': None, 'ambulances_at_start': [array of ambulance_ids]}
 
-            ambulances[ambulance_id] = {'starting_hospital': hospital_id, 'route': None}
+            ambulances[ambulance_id] = {'starting_hospital': hospital_id}
 
         RETURN INFO
         -----------
