@@ -17,9 +17,9 @@ class Player(object):
         buffer_size_message = json.loads(self.client.receive_data(size=2048))
         buffer_size = int(buffer_size_message['buffer_size'])
         game_state = json.loads(self.client.receive_data(size=buffer_size))
-        self.patients = game_state['patients']
-        self.hospitals = game_state['hospitals']
-        self.ambulances = game_state['ambulances']
+        self.patients = {int(key): value for key, value in game_state['patients'].items()}
+        self.hospitals = {int(key): value for key, value in game_state['hospitals'].items()}
+        self.ambulances = {int(key): value for key, value in game_state['ambulances'].items()}
 
         # Get hospital locations and ambulance routes
         (hos_locations, amb_routes) = self.your_algorithm()
@@ -97,7 +97,7 @@ class Player(object):
         total_patients = len(self.patients)
 
         for hos_id, hos in self.hospitals.items():
-            res_hos[hos_id] = {'xloc': self.patients[str(counter)]['xloc'], 'yloc': self.patients[str(counter)]['yloc']}
+            res_hos[hos_id] = {'xloc': self.patients[counter]['xloc'], 'yloc': self.patients[counter]['yloc']}
             counter += 4
 
         for amb_id, amb in self.ambulances.items():

@@ -129,7 +129,7 @@ class GameServer(object):
                 m = 'Didn\'t get hospital location for hospital #' + str(hos_id)
                 self.game_over(m, [])
 
-            if xloc < 0 or yloc < 0:
+            if xloc < 0 or yloc < 0 or xloc > 1000 or yloc > 1000:
                 m = 'Invalid hospital location'
                 self.game_over(m, [])
 
@@ -168,9 +168,10 @@ class GameServer(object):
                     else:
                         p_inside_amb += [p_id]
                         patients_picked_up += [p_id]
+                        time_counter += 1
                     new_loc = (self.patients[p_id]['xloc'], self.patients[p_id]['yloc'])
                     time_taken = self.route_time(current_loc, new_loc)
-                    time_counter += time_taken + 1
+                    time_counter += time_taken
                     current_loc = new_loc
                     continue
                 elif amb_stop[0].lower() == 'h':
@@ -184,7 +185,9 @@ class GameServer(object):
                         self.game_over(m, [])
                     new_loc = (self.hospitals[h_id]['xloc'], self.hospitals[h_id]['yloc'])
                     time_taken = self.route_time(current_loc, new_loc)
-                    time_counter += time_taken + 1
+                    time_counter += time_taken
+                    if len(p_inside_amb) > 0:
+                        time_counter += 1
                     current_loc = new_loc
                     for patient in p_inside_amb:
                         if time_counter <= self.patients[patient]['rescuetime']:
@@ -200,7 +203,9 @@ class GameServer(object):
                     self.game_over(m, [])
 
         print('All ambulances have finished their routes')
-        print('Patients saved:')
+        print('------------')
+        print('Congratulations!')
+        print('Patients that lived:')
         print(patients_saved)
         print('Total number of patients saved: ' + str(len(patients_saved)))
         self.game_over('Congratulations!', patients_saved, finished=True)
