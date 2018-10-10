@@ -2,6 +2,24 @@
 
 This is the architecture for the ambulance problem.
 
+## The Game
+The ambulance game is non-adversarial, meaning you are not playing against an opponent. Each team will have two minutes to determine optimal placement of hospitals and ambulance routes. The server will send the client all of the data it needs to determine this and then the client will respond with its solution.
+
+The game will have 300 patients on a 1001 x 1001 grid (0 <= x,y <= 1000) and 5 hospitals with some number of ambulances starting at each hospital. No hospital will start with more than 25 ambulances.
+
+Patients are considered saved if they reach the hospital with at least 1 minute left remaining (to account for the 1 minute to unload the patient).
+
+You may place hospitals anywhere on the grid, including on top of each other and on top of patients. If the hospital is on top of a patient, they are not automatically rescued. They must still be picked up by an ambulance and dropped off (so minimum of 2 minutes).
+
+Patients may be at the same location. In such a case, each patient still takes 1 minute to load (as per the rules on the website).
+
+Rules that must be followed. Failure to follow these rules will result in a forfeit of the game:
+* An ambulance can pick up no more than 4 patients at a time. Any ambulance route attempting to pick up more than 4 patients will forfeit the game.
+    * Dead patients still count. Their bodies must be dropped off at the hospital before their spot on the ambulance is freed.
+* A patient may only be picked up once. If any ambulance attempts to pick up a patient already picked up by another ambulance, they will not pick up that patient and will not incur the 1 minute penalty of loading a patient into the ambulance.
+* Ambulance routes are validated in order of their id, so if two ambulances attempt to pick up the same patient, the ambulance with the smaller id will be the one to take the patient.
+* All hospitals must be assigned a location. Failure to do so will forfeit the game.
+
 ## Setup Client / Server Code
 
 1. This project uses `python3.6`. If you haven't already, please install it.
@@ -36,6 +54,8 @@ Patients that lived:
 Number of patients saved = 0
 ```
 
+##### NOTE: If you wish to rename your client file to something other than 'client.py', please remember to update the import line in      run_game.py to 'from <your_client_name> import Player'
+
 ## Including Your Client Code
 
 The players only need to modify one file: client.py
@@ -49,11 +69,7 @@ These dictionaries are structured as follows:
 
     hospitals[hospital_id] = {'xloc': None, 'yloc': None, 'ambulances_at_start': [array of ambulance_ids]}
 
-    ambulances[ambulance_id] = {'starting_hospital': hospital_id, 'route': None}
-
-IMPORTANT: Although all values are integers (inlcuding ids) JSON converts everything into strings. Hence,
-           if you wish to use the values as integers, please remember to cast them into ints. Likewise, to index
-           into the dictionaries please remember to cast numeric ids into strings i.e. self.patients[str(p_id)]
+    ambulances[ambulance_id] = {'starting_hospital': hospital_id}
 
 RETURN INFO
 -----------
