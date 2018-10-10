@@ -60,10 +60,6 @@ class Player(object):
 
             ambulances[ambulance_id] = {'starting_hospital': hospital_id, 'route': None}
 
-        IMPORTANT: Although all values are integers (inlcuding ids) JSON converts everything into strings. Hence,
-                   if you wish to use the values as integers, please remember to cast them into ints. Likewise, to index
-                   into the dictionaries please remember to cast numeric ids into strings i.e. self.patients[str(p_id)]
-
         RETURN INFO
         -----------
         You must return a tuple of dictionaries (hospital_locations, ambulance_routes). These MUST be structured as:
