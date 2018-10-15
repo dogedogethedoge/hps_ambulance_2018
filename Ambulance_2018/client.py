@@ -85,11 +85,18 @@ class Player(object):
                 patient #43, then drops both off at hospital #4, then picks up patients #102, #145, #241, #32 in that
                 order then drops all of them off at hospital #1
         """
+        
+        latinLatinLatin = carpeDiem(self.patients, self.hospitals, self.ambulances, 100, 100)
+        latinLatinLatin.evolve()
+        latinLatinLatin.writeDictionaries()             
+        
         res_hos = {}
         res_amb = {}
         counter = 0
         p_count = 0
 
+   
+        
         total_patients = len(self.patients)
 
         for hos_id, hos in self.hospitals.items():
